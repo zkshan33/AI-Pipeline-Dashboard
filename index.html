@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sales Pipeline Dashboard — Live Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0B0F14;
+    --surface:#121821;
+    --surface-2:#1A222D;
+    --line: rgba(255,255,255,0.08);
+    --text:#E8ECF1;
+    --muted:#8A94A3;
+    --gold:#E8A93B;
+    --gold-dim: rgba(232,169,59,0.14);
+    --teal:#4FD1C5;
+    --teal-dim: rgba(79,209,197,0.14);
+    --red:#E2574C;
+    --red-dim: rgba(226,87,76,0.14);
+    --gray-stage: #6B7684;
+    --gray-stage-dim: rgba(107,118,132,0.14);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--ink);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+  .mono{font-family:'JetBrains Mono',monospace;}
+  .display{font-family:'Space Grotesk',sans-serif;}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+
+  /* header */
+  header{
+    border-bottom:1px solid var(--line);
+    padding:20px 0;
+    position:sticky;top:0;
+    background:rgba(11,15,20,0.85);
+    backdrop-filter:blur(10px);
+    z-index:10;
+  }
+  .header-row{display:flex;align-items:center;justify-content:space-between;}
+  .brand{display:flex;align-items:center;gap:10px;}
+  .brand-mark{
+    width:30px;height:30px;border-radius:7px;
+    background:linear-gradient(135deg, var(--gold), #C9832A);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Space Grotesk',sans-serif;font-weight:700;color:#0B0F14;font-size:15px;
+  }
+  .brand-name{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:16px;letter-spacing:-0.01em;}
+  .badge-live{
+    display:flex;align-items:center;gap:6px;
+    font-size:11px;letter-spacing:0.08em;text-transform:uppercase;
+    color:var(--teal);font-family:'JetBrains Mono',monospace;
+  }
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--teal);animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.35;}}
+  .cta-link{
+    color:var(--ink);background:var(--gold);
+    padding:9px 16px;border-radius:8px;
+    font-size:13px;font-weight:600;text-decoration:none;
+    white-space:nowrap;
+  }
+
+  /* hero */
+  .hero{padding:44px 0 8px;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:10px;
+  }
+  h1{
+    font-family:'Space Grotesk',sans-serif;font-weight:600;
+    font-size:34px;letter-spacing:-0.02em;margin:0 0 8px;
+  }
+  .subhead{color:var(--muted);font-size:15px;max-width:560px;margin:0 0 28px;}
+
+  /* stat cards */
+  .stats-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:36px;
+  }
+  .stat-card{
+    background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 18px 16px;
+    border-top:3px solid var(--accent, var(--gold));
+  }
+  .stat-label{font-size:12px;color:var(--muted);margin-bottom:10px;}
+  .stat-value{font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:600;letter-spacing:-0.01em;}
+  .stat-sub{font-size:12px;color:var(--muted);margin-top:6px;}
+  .stat-sub.up{color:var(--teal);}
+  .stat-sub.warn{color:var(--gold);}
+
+  section{padding:8px 0 40px;}
+  .section-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px;}
+  .section-title{font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:600;letter-spacing:-0.01em;}
+  .section-note{font-size:12.5px;color:var(--muted);}
+
+  /* PIPELINE FLOW - signature element */
+  .pipeline-flow{
+    background:var(--surface);border:1px solid var(--line);border-radius:14px;
+    padding:26px 22px 20px;overflow-x:auto;
+  }
+  .flow-track{
+    display:flex;align-items:stretch;gap:0;min-width:920px;
+  }
+  .flow-stage{
+    flex:1;position:relative;padding:0 14px;
+  }
+  .flow-stage:first-child{padding-left:0;}
+  .flow-connector{
+    position:absolute;top:38px;right:-1px;width:14px;height:2px;background:var(--line);z-index:1;
+  }
+  .flow-stage:last-child .flow-connector{display:none;}
+  .stage-name{font-size:12px;color:var(--muted);margin-bottom:8px;white-space:nowrap;}
+  .stage-bar-track{
+    height:8px;background:var(--surface-2);border-radius:5px;overflow:hidden;margin-bottom:12px;
+  }
+  .stage-bar-fill{height:100%;border-radius:5px;}
+  .stage-count{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:600;}
+  .stage-value{font-size:12px;color:var(--muted);margin-top:2px;}
+  .stage-conv{
+    display:inline-block;margin-top:8px;font-size:11px;
+    font-family:'JetBrains Mono',monospace;
+    color:var(--muted);
+  }
+
+  .flow-legend{display:flex;gap:20px;margin-top:22px;padding-top:16px;border-top:1px solid var(--line);flex-wrap:wrap;}
+  .legend-item{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);}
+  .legend-dot{width:8px;height:8px;border-radius:2px;}
+
+  /* stage table */
+  .stage-table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  .stage-table th{
+    text-align:left;padding:10px 14px;font-size:11px;text-transform:uppercase;
+    letter-spacing:0.06em;color:var(--muted);font-weight:500;border-bottom:1px solid var(--line);
+  }
+  .stage-table td{padding:13px 14px;border-bottom:1px solid var(--line);}
+  .stage-table tr:last-child td{border-bottom:none;}
+  .stage-pill{
+    display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:20px;
+    font-size:12px;font-weight:500;
+  }
+  .pipe-dot{width:6px;height:6px;border-radius:50%;}
+  .val{font-family:'JetBrains Mono',monospace;}
+
+  /* two column layout */
+  .two-col{display:grid;grid-template-columns:1.3fr 1fr;gap:16px;}
+
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 20px;}
+
+  .deal-row{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:12px 0;border-bottom:1px solid var(--line);gap:12px;
+  }
+  .deal-row:last-child{border-bottom:none;}
+  .deal-name{font-size:13.5px;font-weight:500;}
+  .deal-meta{font-size:12px;color:var(--muted);margin-top:2px;}
+  .deal-right{text-align:right;flex-shrink:0;}
+  .deal-value{font-family:'JetBrains Mono',monospace;font-size:13.5px;}
+  .flag{
+    font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;
+    padding:2px 8px;border-radius:5px;margin-top:4px;display:inline-block;
+  }
+  .flag.hot{background:var(--teal-dim);color:var(--teal);}
+  .flag.cooling{background:var(--gold-dim);color:var(--gold);}
+  .flag.stalled{background:var(--red-dim);color:var(--red);}
+
+  .insight-row{display:flex;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);}
+  .insight-row:last-child{border-bottom:none;}
+  .insight-icon{
+    width:22px;height:22px;border-radius:6px;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;font-size:12px;margin-top:1px;
+  }
+  .insight-text{font-size:13px;color:var(--text);}
+  .insight-text b{color:var(--text);}
+  .insight-sub{font-size:12px;color:var(--muted);margin-top:2px;}
+
+  footer{
+    border-top:1px solid var(--line);padding:34px 0 40px;text-align:center;
+  }
+  .footer-title{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:600;margin-bottom:8px;}
+  .footer-sub{color:var(--muted);font-size:13.5px;max-width:480px;margin:0 auto 20px;}
+  .footer-cta{
+    display:inline-block;background:var(--gold);color:var(--ink);
+    padding:11px 22px;border-radius:9px;font-weight:600;font-size:14px;text-decoration:none;
+  }
+  .footer-note{color:var(--muted);font-size:11.5px;margin-top:22px;}
+  .footer-stack{color:#5B6472;font-size:11.5px;margin-top:4px;}
+
+  @media (max-width: 860px){
+    .stats-grid{grid-template-columns:repeat(2,1fr);}
+    .two-col{grid-template-columns:1fr;}
+    h1{font-size:26px;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .dot{animation:none;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap header-row">
+    <div class="brand">
+      <div class="brand-mark">P</div>
+      <div class="brand-name">Pipeline Pulse</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:18px;">
+      <div class="badge-live"><span class="dot"></span>LIVE — sample data</div>
+      <a class="cta-link" href="#" onclick="return false;">Get this for your business →</a>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Sales pipeline · live demo</div>
+    <h1>See every deal, at every stage, in real time.</h1>
+    <p class="subhead">Pulled straight from your CRM — no spreadsheets, no guessing which deals are stuck or which ones are about to close.</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card" style="--accent:#4F8DFF">
+      <div class="stat-label">Pipeline value</div>
+      <div class="stat-value" id="statPipelineValue">$0</div>
+      <div class="stat-sub">across 8 stages</div>
+    </div>
+    <div class="stat-card" style="--accent:#E85FD0">
+      <div class="stat-label">Active deals</div>
+      <div class="stat-value" id="statActiveDeals">0</div>
+      <div class="stat-sub">excl. Paid / Parked / DND</div>
+    </div>
+    <div class="stat-card" style="--accent:#2ECC87">
+      <div class="stat-label">Win rate</div>
+      <div class="stat-value" id="statWinRate">0%</div>
+      <div class="stat-sub up">↑ 3.2 pts vs last month</div>
+    </div>
+    <div class="stat-card" style="--accent:#FF7A45">
+      <div class="stat-label">Stuck 5+ days</div>
+      <div class="stat-value" id="statStuck">0</div>
+      <div class="stat-sub warn">needs a follow-up</div>
+    </div>
+  </div>
+
+  <section>
+    <div class="section-head">
+      <div class="section-title">Pipeline flow</div>
+      <div class="section-note">Deal count &amp; value at each stage</div>
+    </div>
+    <div class="pipeline-flow">
+      <div class="flow-track" id="flowTrack"></div>
+      <div class="flow-legend" id="flowLegend"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <div class="section-title">Stage breakdown</div>
+      <div class="section-note">Avg. days in stage &amp; conversion to next</div>
+    </div>
+    <div class="card" style="padding:6px 0;">
+      <table class="stage-table">
+        <thead>
+          <tr>
+            <th>Stage</th>
+            <th>Deals</th>
+            <th>Value</th>
+            <th>Avg. days here</th>
+            <th>→ Next stage</th>
+          </tr>
+        </thead>
+        <tbody id="stageTableBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="two-col">
+      <div>
+        <div class="section-head">
+          <div class="section-title">Deals needing attention</div>
+        </div>
+        <div class="card" id="dealsCard"></div>
+      </div>
+      <div>
+        <div class="section-head">
+          <div class="section-title">AI insights</div>
+        </div>
+        <div class="card" id="insightsCard"></div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-title">Every number above is sample data. The setup behind it isn't.</div>
+    <p class="footer-sub">This exact dashboard can run on your own CRM within a few days — wired straight to your leads, calls, and payments, so your team stops guessing where deals are stuck.</p>
+    <a class="footer-cta" href="#" onclick="return false;">Let's build yours →</a>
+    <div class="footer-note">Every figure on this page is illustrative — no real client data is shown.</div>
+    <div class="footer-stack">Pipeline Pulse · Demo build · Works with GoHighLevel and most modern CRMs</div>
+    <div class="footer-stack" style="margin-top:6px;">Powered by Zeeshan Khalid</div>
+  </div>
+</footer>
+
+<script>
+  // ---- Sample data: pipeline stages as provided, each with its own color ----
+  const stages = [
+    { name: "New Lead",         count: 145, value: 362500, avgDays: 1,  hex: "#4F8DFF", type:"progress" },
+    { name: "Lead Responded",   count: 98,  value: 245000, avgDays: 2,  hex: "#9B6BFF", type:"progress" },
+    { name: "Booked a Call",    count: 62,  value: 186000, avgDays: 3,  hex: "#E85FD0", type:"progress" },
+    { name: "Client Qualified", count: 41,  value: 164000, avgDays: 4,  hex: "#FF7A45", type:"progress" },
+    { name: "Billed",           count: 27,  value: 121500, avgDays: 3,  hex: "#FFC531", type:"progress" },
+    { name: "Paid",             count: 22,  value: 99000,  avgDays: 0,  hex: "#2ECC87", type:"won" },
+    { name: "Parked",           count: 18,  value: 54000,  avgDays: 12, hex: "#C9A227", type:"parked" },
+    { name: "DND",              count: 9,   value: 0,      avgDays: 0,  hex: "#FF5C5C", type:"dead" },
+  ];
+
+  const dim = hex => `color-mix(in srgb, ${hex} 18%, transparent)`;
+
+  const fmtMoney = n => "$" + n.toLocaleString("en-US");
+  const maxCount = Math.max(...stages.map(s => s.count));
+
+  // ---- Top stats ----
+  const activeDeals = stages.filter(s => s.type === "progress").reduce((a,s)=>a+s.count,0);
+  const totalPipelineValue = stages.filter(s => s.type !== "dead").reduce((a,s)=>a+s.value,0);
+  const paidCount = stages.find(s=>s.name==="Paid").count;
+  const dndCount = stages.find(s=>s.name==="DND").count;
+  const winRate = ((paidCount / (paidCount + dndCount + stages.find(s=>s.name==="Parked").count)) * 100).toFixed(1);
+
+  document.getElementById("statPipelineValue").textContent = fmtMoney(totalPipelineValue);
+  document.getElementById("statActiveDeals").textContent = activeDeals.toLocaleString();
+  document.getElementById("statWinRate").textContent = winRate + "%";
+  document.getElementById("statStuck").textContent = "14";
+
+  // ---- Pipeline flow bars ----
+  const flowTrack = document.getElementById("flowTrack");
+  stages.forEach((s, i) => {
+    const pct = Math.max(6, Math.round((s.count / maxCount) * 100));
+    const nextConv = i < stages.length - 1 && stages[i+1].type === "progress"
+      ? Math.round((stages[i+1].count / s.count) * 100) + "%"
+      : (s.type === "progress" ? "—" : null);
+
+    const div = document.createElement("div");
+    div.className = "flow-stage";
+    div.innerHTML = `
+      <div class="stage-name">${s.name}</div>
+      <div class="stage-bar-track"><div class="stage-bar-fill" style="width:${pct}%; background:${s.hex}"></div></div>
+      <div class="stage-count" style="color:${s.hex}">${s.count}</div>
+      <div class="stage-value">${fmtMoney(s.value)}</div>
+      ${nextConv ? `<div class="stage-conv">→ ${nextConv} advance</div>` : ""}
+      <div class="flow-connector"></div>
+    `;
+    flowTrack.appendChild(div);
+  });
+
+  // ---- Legend: one swatch per stage ----
+  const flowLegend = document.getElementById("flowLegend");
+  stages.forEach(s => {
+    const item = document.createElement("div");
+    item.className = "legend-item";
+    item.innerHTML = `<span class="legend-dot" style="background:${s.hex}"></span>${s.name}`;
+    flowLegend.appendChild(item);
+  });
+
+  // ---- Stage table ----
+  const tbody = document.getElementById("stageTableBody");
+  stages.forEach((s, i) => {
+    const nextName = i < stages.length - 1 ? stages[i+1].name : "—";
+    const nextConv = i < stages.length - 1 && s.type === "progress" && stages[i+1].type === "progress"
+      ? Math.round((stages[i+1].count / s.count) * 100) + "% → " + nextName
+      : (s.type === "progress" ? "final active stage" : "—");
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><span class="stage-pill" style="background:${dim(s.hex)};color:${s.hex}"><span class="pipe-dot" style="background:${s.hex}"></span>${s.name}</span></td>
+      <td class="val">${s.count}</td>
+      <td class="val">${fmtMoney(s.value)}</td>
+      <td class="val">${s.avgDays > 0 ? s.avgDays + "d" : "—"}</td>
+      <td>${nextConv}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  // ---- Deals needing attention ----
+  const deals = [
+    { name: "Marcus H.", stage: "Booked a Call", value: 8400, days: 6, flag: "stalled", note: "No response since call, 6 days" },
+    { name: "Priya S.", stage: "Client Qualified", value: 12200, days: 1, flag: "hot", note: "Asked for contract, ready to move" },
+    { name: "Devon R.", stage: "Lead Responded", value: 4300, days: 5, flag: "cooling", note: "Opened last message, no reply" },
+    { name: "Lena W.", stage: "Billed", value: 9600, days: 2, flag: "hot", note: "Invoice sent, confirmed payment date" },
+  ];
+  const dealsCard = document.getElementById("dealsCard");
+  deals.forEach(d => {
+    const row = document.createElement("div");
+    row.className = "deal-row";
+    row.innerHTML = `
+      <div>
+        <div class="deal-name">${d.name}</div>
+        <div class="deal-meta">${d.stage} · ${d.days}d in stage</div>
+      </div>
+      <div class="deal-right">
+        <div class="deal-value">${fmtMoney(d.value)}</div>
+        <div class="flag ${d.flag}">${d.flag === "hot" ? "Ready" : d.flag === "cooling" ? "Cooling" : "Stalled"}</div>
+      </div>
+    `;
+    dealsCard.appendChild(row);
+  });
+
+  // ---- AI insights ----
+  const insights = [
+    { icon:"⚠", color:"red", text:"14 deals have sat in <b>Lead Responded</b> or <b>Booked a Call</b> for 5+ days.", sub:"Follow up today to avoid losing them to Parked." },
+    { icon:"↑", color:"teal", text:"<b>Client Qualified → Billed</b> conversion is up 9% this month.", sub:"Current run rate: 66% of qualified clients get billed." },
+    { icon:"$", color:"gold", text:"$54,000 sitting in <b>Parked</b> deals older than 10 days.", sub:"Consider a re-engagement sequence for this list." },
+    { icon:"●", color:"gray", text:"<b>New Lead → Lead Responded</b> is your biggest drop-off, at 68% response rate.", sub:"Faster first-touch time typically improves this." },
+  ];
+  const insightsCard = document.getElementById("insightsCard");
+  insights.forEach(ins => {
+    const row = document.createElement("div");
+    row.className = "insight-row";
+    row.innerHTML = `
+      <div class="insight-icon" style="background:${dimVar[ins.color]};color:${colorVar[ins.color]}">${ins.icon}</div>
+      <div>
+        <div class="insight-text">${ins.text}</div>
+        <div class="insight-sub">${ins.sub}</div>
+      </div>
+    `;
+    insightsCard.appendChild(row);
+  });
+</script>
+
+</body>
+</html>
