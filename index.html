@@ -8,13 +8,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#F5F6FB;
-    --surface:#FFFFFF;
-    --border:#E8EAF2;
-    --text:#1B2033;
-    --muted:#6B7280;
-    --muted-2:#9AA1B2;
-    --shadow: 0 1px 2px rgba(20,20,43,0.04), 0 8px 24px rgba(20,20,43,0.05);
+    --bg:#0B0E14;
+    --surface:#141924;
+    --border:rgba(255,255,255,0.08);
+    --text:#E9ECF3;
+    --muted:#9AA3B5;
+    --muted-2:#6B7385;
+    --shadow: 0 1px 2px rgba(0,0,0,0.2), 0 8px 24px rgba(0,0,0,0.35);
 
     --c-new:#3B82F6;
     --c-responded:#8B5CF6;
@@ -40,7 +40,7 @@
 
   /* header */
   header{
-    background:rgba(245,246,251,0.9);
+    background:rgba(11,14,20,0.85);
     backdrop-filter:blur(10px);
     border-bottom:1px solid var(--border);
     padding:18px 0;
@@ -58,10 +58,10 @@
   .badge-live{
     display:flex;align-items:center;gap:6px;
     font-size:11px;letter-spacing:0.06em;text-transform:uppercase;
-    color:#22C55E;font-family:'JetBrains Mono',monospace;font-weight:600;
-    background:rgba(34,197,94,0.1);padding:5px 10px;border-radius:20px;
+    color:#4ADE80;font-family:'JetBrains Mono',monospace;font-weight:600;
+    background:rgba(34,197,94,0.14);padding:5px 10px;border-radius:20px;
   }
-  .dot{width:6px;height:6px;border-radius:50%;background:#22C55E;animation:pulse 2s infinite;}
+  .dot{width:6px;height:6px;border-radius:50%;background:#4ADE80;animation:pulse 2s infinite;}
   @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
   .cta-btn{
     color:#fff;background:linear-gradient(135deg,#3B82F6,#8B5CF6);
@@ -110,8 +110,8 @@
   }
   .stage-card{
     border-radius:14px;padding:16px;position:relative;overflow:hidden;
-    background: color-mix(in srgb, var(--sc) 10%, white);
-    border:1px solid color-mix(in srgb, var(--sc) 30%, white);
+    background: color-mix(in srgb, var(--sc) 16%, var(--surface));
+    border:1px solid color-mix(in srgb, var(--sc) 45%, var(--border));
   }
   .stage-tag{
     display:inline-flex;align-items:center;gap:6px;
@@ -132,16 +132,17 @@
   .filter-label{font-size:11px;color:var(--muted-2);font-weight:600;text-transform:uppercase;letter-spacing:0.04em;}
   select, input[type="date"]{
     font-family:'Inter',sans-serif;font-size:13px;color:var(--text);
-    border:1px solid var(--border);background:#FAFBFD;
+    border:1px solid var(--border);background:#0F131C;
     padding:8px 12px;border-radius:9px;outline:none;min-width:140px;
+    color-scheme: dark;
   }
-  select:focus, input[type="date"]:focus{border-color:#8B5CF6;}
+  select:focus, input[type="date"]{border-color:#8B5CF6;}
   .clear-btn{
     align-self:flex-end;
-    background:#F1F2F8;color:var(--text);border:1px solid var(--border);
+    background:rgba(255,255,255,0.06);color:var(--text);border:1px solid var(--border);
     padding:8px 14px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;
   }
-  .clear-btn:hover{background:#E8EAF2;}
+  .clear-btn:hover{background:rgba(255,255,255,0.1);}
   .results-note{font-size:12.5px;color:var(--muted);margin:14px 2px 12px;}
 
   /* opportunities table */
@@ -153,11 +154,11 @@
   thead th{
     text-align:left;padding:12px 16px;font-size:11px;text-transform:uppercase;
     letter-spacing:0.05em;color:var(--muted-2);font-weight:700;
-    background:#FAFBFD;border-bottom:1px solid var(--border);
+    background:rgba(255,255,255,0.03);border-bottom:1px solid var(--border);
   }
   tbody td{padding:12px 16px;border-bottom:1px solid var(--border);vertical-align:middle;}
   tbody tr:last-child td{border-bottom:none;}
-  tbody tr:hover{background:#FAFBFD;}
+  tbody tr:hover{background:rgba(255,255,255,0.03);}
   .opp-name{font-weight:600;color:var(--text);}
   .opp-contact{font-size:12px;color:var(--muted);margin-top:1px;}
   .user-chip{display:flex;align-items:center;gap:8px;}
@@ -177,11 +178,11 @@
     padding:14px 16px;border-top:1px solid var(--border);flex-wrap:wrap;gap:10px;
   }
   .page-btn{
-    background:#F1F2F8;border:1px solid var(--border);color:var(--text);
+    background:rgba(255,255,255,0.06);border:1px solid var(--border);color:var(--text);
     padding:7px 13px;border-radius:8px;font-size:12.5px;font-weight:600;cursor:pointer;
   }
   .page-btn:disabled{opacity:0.4;cursor:not-allowed;}
-  .page-btn:not(:disabled):hover{background:#E8EAF2;}
+  .page-btn:not(:disabled):hover{background:rgba(255,255,255,0.1);}
   .page-info{font-size:12.5px;color:var(--muted);}
 
   footer{border-top:1px solid var(--border);padding:36px 0 40px;text-align:center;}
@@ -194,13 +195,24 @@
   }
   .footer-note{color:var(--muted-2);font-size:11.5px;margin-top:22px;}
   .footer-stack{color:var(--muted-2);font-size:11.5px;margin-top:4px;}
+  .social-row{
+    display:flex;align-items:center;justify-content:center;gap:14px;margin:24px 0 6px;
+  }
+  .social-icon{
+    width:40px;height:40px;border-radius:11px;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(255,255,255,0.06);border:1px solid var(--border);
+    color:var(--text);transition:transform 0.15s ease, background 0.15s ease;
+  }
+  .social-icon:hover{background:rgba(255,255,255,0.12);transform:translateY(-2px);}
+  .social-icon svg{width:18px;height:18px;}
 
   @media (max-width: 900px){
     .stats-grid{grid-template-columns:repeat(2,1fr);}
     .stage-grid{grid-template-columns:repeat(2,1fr);}
     h1{font-size:26px;}
     .table-card{overflow-x:auto;}
-    table{min-width:680px;}
+    table{min-width:780px;}
   }
   @media (prefers-reduced-motion: reduce){.dot{animation:none;}}
 </style>
@@ -215,7 +227,7 @@
     </div>
     <div style="display:flex;align-items:center;gap:14px;">
       <div class="badge-live"><span class="dot"></span>Live — sample data</div>
-      <a class="cta-btn" href="#" onclick="return false;">Let's build yours →</a>
+      <a class="cta-btn" href="https://wa.me/923006704633" target="_blank" rel="noopener">Let's build yours →</a>
     </div>
   </div>
 </header>
@@ -270,7 +282,11 @@
         <select id="filterUser"><option value="">All users</option></select>
       </div>
       <div class="filter-group">
-        <label class="filter-label">Tag / Stage</label>
+        <label class="filter-label">Stage</label>
+        <select id="filterStage"><option value="">All stages</option></select>
+      </div>
+      <div class="filter-group">
+        <label class="filter-label">Tag</label>
         <select id="filterTag"><option value="">All tags</option></select>
       </div>
       <div class="filter-group">
@@ -292,6 +308,7 @@
           <tr>
             <th>Opportunity</th>
             <th>Assigned to</th>
+            <th>Stage</th>
             <th>Tag</th>
             <th>Value</th>
             <th>Created</th>
@@ -314,7 +331,22 @@
   <div class="wrap">
     <div class="footer-title">Every number above is sample data. The setup behind it isn't.</div>
     <p class="footer-sub">This exact dashboard can run on your own CRM within a few days — wired straight to your leads, calls, and payments, so your team stops guessing where deals are stuck.</p>
-    <a class="footer-cta" href="#" onclick="return false;">Let's build yours →</a>
+    <a class="footer-cta" href="https://wa.me/923006704633" target="_blank" rel="noopener">Let's build yours →</a>
+
+    <div class="social-row">
+      <a class="social-icon" href="https://wa.me/923006704633" target="_blank" rel="noopener" aria-label="WhatsApp" style="--hover:#25D366">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 6.32A8.86 8.86 0 0 0 12.05 4a8.83 8.83 0 0 0-8.83 8.83c0 1.55.41 3.06 1.19 4.4L3.2 21.5l4.4-1.15a8.85 8.85 0 0 0 4.44 1.19h.01a8.83 8.83 0 0 0 8.83-8.82c0-2.36-.92-4.58-2.28-6.4Zm-5.55 13.6h-.01a7.33 7.33 0 0 1-3.74-1.02l-.27-.16-2.78.73.74-2.71-.18-.28a7.33 7.33 0 0 1-1.13-3.93 7.35 7.35 0 0 1 7.35-7.35 7.3 7.3 0 0 1 5.2 2.16 7.3 7.3 0 0 1 2.15 5.2 7.35 7.35 0 0 1-7.33 7.36Zm4.02-5.5c-.22-.11-1.3-.64-1.5-.71-.2-.08-.35-.11-.5.1-.14.22-.57.72-.7.87-.13.14-.26.16-.48.05-.22-.11-.93-.34-1.77-1.09-.65-.58-1.09-1.3-1.22-1.52-.13-.22-.01-.34.1-.45.1-.1.22-.26.33-.4.11-.13.15-.22.22-.37.07-.14.04-.27-.02-.38-.06-.11-.5-1.2-.68-1.65-.18-.43-.36-.37-.5-.38h-.43c-.14 0-.38.05-.58.27-.2.22-.76.74-.76 1.8s.78 2.09.89 2.23c.11.14 1.53 2.34 3.72 3.28.52.22.92.36 1.24.46.52.16 1 .14 1.37.09.42-.06 1.3-.53 1.48-1.04.18-.51.18-.95.13-1.04-.05-.1-.2-.15-.42-.26Z"/></svg>
+      </a>
+      <a class="social-icon" href="https://www.linkedin.com/in/zkshan" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.49 6S0 4.88 0 3.5C0 2.12 1.11 1 2.49 1s2.49 1.12 2.49 2.5ZM.24 8.25h4.5V23H.24V8.25ZM8.4 8.25h4.31v2.01h.06c.6-1.13 2.07-2.33 4.26-2.33 4.55 0 5.39 3 5.39 6.9V23h-4.5v-6.68c0-1.6-.03-3.65-2.22-3.65-2.23 0-2.57 1.74-2.57 3.54V23H8.4V8.25Z"/></svg>
+      </a>
+      <a class="social-icon" href="https://www.facebook.com/zkshan" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.51 1.49-3.9 3.77-3.9 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.44 2.91h-2.34V22c4.78-.79 8.44-4.94 8.44-9.94Z"/></svg>
+      </a>
+      <a class="social-icon" href="mailto:zkshan33@gmail.com" aria-label="Email">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 5.5A2.5 2.5 0 0 1 4.5 3h15A2.5 2.5 0 0 1 22 5.5v13a2.5 2.5 0 0 1-2.5 2.5h-15A2.5 2.5 0 0 1 2 18.5v-13Zm2.2.3 7.8 6.2 7.8-6.2H4.2ZM20 7.4l-7.4 5.9a1 1 0 0 1-1.2 0L4 7.4V18.5c0 .28.22.5.5.5h15c.28 0 .5-.22.5-.5V7.4Z"/></svg>
+      </a>
+    </div>
     <div class="footer-note">Every figure on this page is illustrative — no real client data is shown.</div>
     <div class="footer-stack">Pipeline Pulse · Demo build · Works with GoHighLevel and most modern CRMs</div>
     <div class="footer-stack" style="margin-top:6px;">Powered by Zeeshan Khalid</div>
@@ -336,6 +368,17 @@
   // resolve css vars to hex strings for use in JS-generated inline styles
   const rootStyles = getComputedStyle(document.documentElement);
   STAGES.forEach(s => { s.color = rootStyles.getPropertyValue(s.hex.replace('var(','').replace(')','')).trim(); });
+
+  // ---- Tags: independent of stage, e.g. deal quality / status labels ----
+  const TAGS = [
+    { name:"Hot",        color:"#FB7185" },
+    { name:"Warm",       color:"#FBBF24" },
+    { name:"VIP",        color:"#A78BFA" },
+    { name:"High Value", color:"#34D399" },
+    { name:"At Risk",    color:"#F87171" },
+    { name:"Referral",   color:"#38BDF8" },
+    { name:"Nurture",    color:"#94A3B8" },
+  ];
 
   // ---- 10 users, each with a distinct avatar color ----
   const USER_COLORS = ["#3B82F6","#8B5CF6","#EC4899","#F97316","#EAB308","#22C55E","#06B6D4","#EF4444","#14B8A6","#A855F7"];
@@ -368,11 +411,14 @@
         "Parked":[1200,6500], "DND":[0,1800]
       }[stage.name];
       const value = randInt(baseValRange[0], baseValRange[1]);
+      const tag = randPick(TAGS);
       OPPORTUNITIES.push({
         id: oppId++,
         name: randPick(FIRST) + (Math.random()>0.6 ? " " + randPick(SUFFIX) : ""),
         stage: stage.name,
         color: stage.color,
+        tag: tag.name,
+        tagColor: tag.color,
         user: randPick(USERS),
         value,
         created,
@@ -409,7 +455,7 @@
       <div class="val">$${value.toLocaleString("en-US")}</div>
     `;
     card.addEventListener("click", () => {
-      document.getElementById("filterTag").value = s.name;
+      document.getElementById("filterStage").value = s.name;
       applyFilters();
     });
     stageGrid.appendChild(card);
@@ -423,10 +469,16 @@
     userSelect.appendChild(opt);
   });
   const tagSelect = document.getElementById("filterTag");
+  TAGS.forEach(t => {
+    const opt = document.createElement("option");
+    opt.value = t.name; opt.textContent = t.name;
+    tagSelect.appendChild(opt);
+  });
+  const stageSelect = document.getElementById("filterStage");
   STAGES.forEach(s => {
     const opt = document.createElement("option");
     opt.value = s.name; opt.textContent = s.name;
-    tagSelect.appendChild(opt);
+    stageSelect.appendChild(opt);
   });
 
   // ---- Table rendering with filters + pagination ----
@@ -436,13 +488,15 @@
 
   function applyFilters(){
     const user = document.getElementById("filterUser").value;
+    const stage = document.getElementById("filterStage").value;
     const tag = document.getElementById("filterTag").value;
     const from = document.getElementById("filterFrom").value ? new Date(document.getElementById("filterFrom").value) : null;
     const to = document.getElementById("filterTo").value ? new Date(document.getElementById("filterTo").value) : null;
 
     filtered = OPPORTUNITIES.filter(o => {
       if(user && o.user.name !== user) return false;
-      if(tag && o.stage !== tag) return false;
+      if(stage && o.stage !== stage) return false;
+      if(tag && o.tag !== tag) return false;
       if(from && o.created < from) return false;
       if(to){ const toEnd = new Date(to); toEnd.setHours(23,59,59,999); if(o.created > toEnd) return false; }
       return true;
@@ -467,6 +521,7 @@
         <td><div class="opp-name">${o.name}</div><div class="opp-contact">Opp #${o.id.toString().padStart(4,"0")}</div></td>
         <td><div class="user-chip"><div class="avatar" style="background:${o.user.color}">${o.user.initials}</div>${o.user.name}</div></td>
         <td><span class="tag-chip" style="background:${o.color}">${o.stage}</span></td>
+        <td><span class="tag-chip" style="background:${o.tagColor}">${o.tag}</span></td>
         <td class="val-cell">$${o.value.toLocaleString("en-US")}</td>
         <td class="date-cell">${fmtDate(o.created)}</td>
         <td class="date-cell">${o.daysInStage}d</td>
@@ -482,11 +537,13 @@
   }
 
   document.getElementById("filterUser").addEventListener("change", applyFilters);
+  document.getElementById("filterStage").addEventListener("change", applyFilters);
   document.getElementById("filterTag").addEventListener("change", applyFilters);
   document.getElementById("filterFrom").addEventListener("change", applyFilters);
   document.getElementById("filterTo").addEventListener("change", applyFilters);
   document.getElementById("clearFilters").addEventListener("click", () => {
     document.getElementById("filterUser").value = "";
+    document.getElementById("filterStage").value = "";
     document.getElementById("filterTag").value = "";
     document.getElementById("filterFrom").value = "";
     document.getElementById("filterTo").value = "";
